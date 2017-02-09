@@ -445,12 +445,18 @@ var Select = React.createClass({
 		}
 		this._blurTimeout = setTimeout(() => {
 			if (this._focusAfterUpdate || !this.isMounted()) return;
+
+			if (this.state.inputValue) {
+				if (! this.props.allowCreate && ! this.state.focusedOption) this.focusNextOption();
+				this.selectFocusedOption(false);
+			}
+
 			this.setState({
-				inputValue: '',
 				isFocused: false,
 				isOpen: false
 			});
 		}, 50);
+
 		if (this.props.onBlur) {
 			this.props.onBlur(event);
 		}
