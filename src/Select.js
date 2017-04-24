@@ -339,6 +339,13 @@ var Select = React.createClass({
 		}));
 	},
 
+
+	modifyValue (valueToModify, newValue) {
+		this.setValue(this.state.values.map(function (value) {
+			return value === valueToModify ? newValue : value;
+		}));
+	},
+
 	clearValue (event) {
 		// if the event was triggered by a mousedown and not the primary
 		// button, ignore it.
@@ -809,12 +816,14 @@ var Select = React.createClass({
 				var renderLabel = this.props.valueRenderer || this.renderOptionLabel;
 				var onOptionLabelClick = this.handleOptionLabelClick.bind(this, val);
 				var onRemove = this.removeValue.bind(this, val);
+				var onModify = this.modifyValue.bind(this, val);
 				var valueComponent = React.createElement(this.props.valueComponent, {
 					key: val[this.props.valueKey],
 					option: val,
 					renderer: renderLabel,
 					optionLabelClick: !!this.props.onOptionLabelClick,
 					onOptionLabelClick: onOptionLabelClick,
+					onModify: onModify,
 					onRemove: onRemove,
 					disabled: this.props.disabled
 				});
