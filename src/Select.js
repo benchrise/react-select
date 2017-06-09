@@ -563,7 +563,9 @@ var Select = React.createClass({
 		});
 	},
 
-	loadAsyncOptions (input = '', state, callback) {
+	loadAsyncOptions (input, state, callback, always) {
+		if (input == null) input = '';
+
 		var thisRequestId = this._currentRequestId = requestId++;
 		if (this.props.cacheAsyncResults) {
 			for (var i = 0; i <= input.length; i++) {
@@ -593,7 +595,7 @@ var Select = React.createClass({
 			if (this.props.cacheAsyncResults) {
 				this._optionsCache[input] = data;
 			}
-			if (thisRequestId !== this._currentRequestId) {
+			if ((this.props.autoload && thisRequestId > 0) && thisRequestId !== this._currentRequestId) {
 				return;
 			}
 			var filteredOptions = this.filterOptions(data.options);
